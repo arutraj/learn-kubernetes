@@ -45,7 +45,24 @@ spec:
       - configMapRef:
           name: game-demo
 
-
-
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: secret-demo
+data:
+  NAME: SGVsbG9Xb3JsZAo=
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: pod-04
+spec:
+  containers:
+    - name: nginx
+      image: docker.io/nginx
+      envFrom:
+      - secretRef:
+          name: secret-demo
 
 
