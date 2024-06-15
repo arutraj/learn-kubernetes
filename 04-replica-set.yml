@@ -17,7 +17,7 @@ spec:
     spec:
       containers:
       - name: nginx
-        image: docker.io/nginx
+        image: docker.io/nginx:1.22
 
 ---
 apiVersion: v1
