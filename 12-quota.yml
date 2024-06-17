@@ -44,10 +44,10 @@ spec:
 apiVersion: v1
 kind: Pod
 metadata:
-  name: quota-mem-cpu-demo-1
+  name: quota-mem-cpu-demo-2
 spec:
   containers:
-  - name: quota-mem-cpu-demo-ctr-2
+  - name: quota-mem-cpu-demo-ctr
     image: redis
     resources:
       limits:
