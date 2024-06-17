@@ -32,7 +32,7 @@ metadata:
 spec:
   containers:
   - name: quota-mem-cpu-demo-ctr
-    image: nginx
+    image: redis
     resources:
       limits:
         memory: "800Mi"
