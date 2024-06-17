@@ -40,3 +40,19 @@ spec:
       requests:
         memory: "800Mi"
         cpu: "400m"
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  name: quota-mem-cpu-demo-1
+spec:
+  containers:
+  - name: quota-mem-cpu-demo-ctr-2
+    image: redis
+    resources:
+      limits:
+        memory: "1800Mi"
+        cpu: "1800m"
+      requests:
+        memory: "1800Mi"
+        cpu: "1400m"
