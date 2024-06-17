@@ -52,3 +52,13 @@ spec:
     - protocol: TCP
       port: 80
       targetPort: 80
+
+apiVersion: v1
+kind: Service
+metadata:
+  name: myedu
+spec:
+  type: ExternalName
+  externalName: www.columbia.edu
+
+
