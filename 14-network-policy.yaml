@@ -84,7 +84,7 @@ spec:
   - Ingress
   ingress:
   - from:
-    - namespaceSelector:
+    - podSelector:
         matchLabels:
           app: nginx
     ports:
