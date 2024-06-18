@@ -54,6 +54,8 @@ kind: Pod
 metadata:
   name: nginx
   namespace: mz
+  labels:
+    app: nginx
 spec:
   containers:
     - name: nginx
