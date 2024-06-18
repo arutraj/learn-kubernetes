@@ -23,10 +23,8 @@ subjects:
 - kind: ServiceAccount
   namespace: default
   name: sample
-  apiGroup: rbac.authorization.k8s.io
 roleRef:
   kind: Role
   name: namespace-reader
-  apiGroup: rbac.authorization.k8s.io
 
 
