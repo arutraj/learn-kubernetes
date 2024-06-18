@@ -100,8 +100,6 @@ metadata:
   name: deny-all-policy
   namespace: mz
 spec:
-  podSelector:
-    matchLabels:
-      app: nginx
+  podSelector: {}
   ingress: []
 
