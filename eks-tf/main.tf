@@ -39,7 +39,7 @@ resource "aws_iam_role_policy_attachment" "example-AmazonEKSVPCResourceControlle
 resource "aws_eks_node_group" "example" {
   cluster_name    = aws_eks_cluster.example.name
   node_group_name = "example"
-  node_role_arn   = aws_iam_role.example.arn
+  node_role_arn   = aws_iam_role.node-example.arn
   subnet_ids      = ["subnet-0f38eb451cbdf6710", "subnet-00542a478baa8a55c"]
   instance_types  = ["t3.medium", "t3.large"]
   capacity_type   = "SPOT"
@@ -51,7 +51,7 @@ resource "aws_eks_node_group" "example" {
   }
 }
 
-resource "aws_iam_role" "example" {
+resource "aws_iam_role" "node-example" {
   name = "eks-node-group-example"
 
   assume_role_policy = jsonencode({
@@ -68,15 +68,15 @@ resource "aws_iam_role" "example" {
 
 resource "aws_iam_role_policy_attachment" "example-AmazonEKSWorkerNodePolicy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKSWorkerNodePolicy"
-  role       = aws_iam_role.example.name
+  role       = aws_iam_role.node-example.name
 }
 
 resource "aws_iam_role_policy_attachment" "example-AmazonEKS_CNI_Policy" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEKS_CNI_Policy"
-  role       = aws_iam_role.example.name
+  role       = aws_iam_role.node-example.name
 }
 
 resource "aws_iam_role_policy_attachment" "example-AmazonEC2ContainerRegistryReadOnly" {
   policy_arn = "arn:aws:iam::aws:policy/AmazonEC2ContainerRegistryReadOnly"
-  role       = aws_iam_role.example.name
+  role       = aws_iam_role.node-example.name
 }
