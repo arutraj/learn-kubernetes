@@ -27,4 +27,25 @@ roleRef:
   kind: Role
   name: namespace-reader
 
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: cluster-reader-1
+rules:
+- apiGroups: [""]
+  resources: ["*"]
+  verbs: ["get", "list"]
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRoleBinding
+metadata:
+  name: cluster-reader-1
+subjects:
+- kind: ServiceAccount
+  namespace: default
+  name: sample
+roleRef:
+  kind: ClusterRole
+  name: cluster-reader-1
 
