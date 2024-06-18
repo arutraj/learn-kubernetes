@@ -3,16 +3,8 @@ resource "aws_eks_cluster" "example" {
   role_arn = aws_iam_role.example.arn
 
   vpc_config {
-    subnet_ids = data.aws_subnets.subnets.ids
+    subnet_ids = ["subnet-0f38eb451cbdf6710", "subnet-00542a478baa8a55c"]
   }
-}
-
-data "aws_subnets" "subnets" {
-  filter {
-    name   = "vpc-id"
-    values = ["vpc-0e93ff27d39f864b7"]
-  }
-
 }
 
 data "aws_iam_policy_document" "assume_role" {
