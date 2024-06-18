@@ -97,9 +97,11 @@ spec:
 kind: NetworkPolicy
 apiVersion: networking.k8s.io/v1
 metadata:
-  name: deny-all-policy
-  namespace: mz
+  name: default-deny
+  namespace: policy-demo
 spec:
-  podSelector: {}
-  ingress: []
-
+  podSelector:
+    matchLabels: {}
+  policyTypes:
+    - Ingress
+    - Egress
