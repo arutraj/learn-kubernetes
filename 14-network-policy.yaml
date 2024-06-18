@@ -77,9 +77,7 @@ metadata:
   name: allow-dmz
   namespace: mz
 spec:
-  podSelector:
-    matchLabels:
-      app: nginx
+  podSelector: {}
   policyTypes:
   - Ingress
   ingress:
