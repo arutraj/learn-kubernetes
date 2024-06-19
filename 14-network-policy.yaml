@@ -94,14 +94,14 @@ spec:
 #     - protocol: TCP
 #       port: 80
 ---
-kind: NetworkPolicy
-apiVersion: networking.k8s.io/v1
-metadata:
-  name: default-deny
-  namespace: mz
-spec:
-  podSelector:
-    matchLabels: {}
-  policyTypes:
-    - Ingress
-    - Egress
+# kind: NetworkPolicy
+# apiVersion: networking.k8s.io/v1
+# metadata:
+#   name: default-deny
+#   namespace: mz
+# spec:
+#   podSelector:
+#     matchLabels: {}
+#   policyTypes:
+#     - Ingress
+#     - Egress
