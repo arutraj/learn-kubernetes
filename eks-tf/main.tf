@@ -2,6 +2,7 @@ resource "aws_eks_cluster" "example" {
   name                      = "example"
   role_arn                  = aws_iam_role.example.arn
   enabled_cluster_log_types = ["audit"]
+  version                   = "1.30"
 
   vpc_config {
     subnet_ids = ["subnet-0f38eb451cbdf6710", "subnet-00542a478baa8a55c"]
@@ -49,7 +50,7 @@ resource "aws_eks_node_group" "example" {
 
   scaling_config {
     desired_size = 1
-    max_size     = 2
+    max_size     = 5
     min_size     = 1
   }
 }
