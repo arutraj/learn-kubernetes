@@ -44,7 +44,6 @@ metadata:
   name: frontend
 spec:
   selector:
-    app: guestbook
     tier: frontend
   ports:
     - protocol: TCP
