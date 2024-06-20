@@ -37,13 +37,14 @@ resource "aws_iam_role_policy_attachment" "example-AmazonEKSVPCResourceControlle
 
 
 resource "aws_eks_node_group" "example" {
-  depends_on      = [aws_eks_addon.vpc-cni]
-  cluster_name    = aws_eks_cluster.example.name
-  node_group_name = "example"
-  node_role_arn   = aws_iam_role.node-example.arn
-  subnet_ids      = ["subnet-0f38eb451cbdf6710", "subnet-00542a478baa8a55c"]
-  instance_types  = ["t3.medium", "t3.large"]
-  capacity_type   = "SPOT"
+  depends_on                = [aws_eks_addon.vpc-cni]
+  cluster_name              = aws_eks_cluster.example.name
+  node_group_name           = "example"
+  node_role_arn             = aws_iam_role.node-example.arn
+  subnet_ids                = ["subnet-0f38eb451cbdf6710", "subnet-00542a478baa8a55c"]
+  instance_types            = ["t3.medium", "t3.large"]
+  capacity_type             = "SPOT"
+  enabled_cluster_log_types = ["audit"]
 
   scaling_config {
     desired_size = 1
