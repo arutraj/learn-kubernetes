@@ -85,6 +85,47 @@ resource "aws_iam_role_policy_attachment" "example-AmazonEC2ContainerRegistryRea
   role       = aws_iam_role.node-example.name
 }
 
+resource "aws_iam_policy" "cluster-autoscale" {
+  name        = "test_policy"
+  path        = "/"
+  description = "My test policy"
+
+  policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": [
+          "autoscaling:DescribeAutoScalingGroups",
+          "autoscaling:DescribeAutoScalingInstances",
+          "autoscaling:DescribeLaunchConfigurations",
+          "autoscaling:DescribeScalingActivities",
+          "autoscaling:DescribeTags",
+          "ec2:DescribeImages",
+          "ec2:DescribeInstanceTypes",
+          "ec2:DescribeLaunchTemplateVersions",
+          "ec2:GetInstanceTypesFromInstanceRequirements",
+          "eks:DescribeNodegroup"
+        ],
+        "Resource": ["*"]
+      },
+      {
+        "Effect": "Allow",
+        "Action": [
+          "autoscaling:SetDesiredCapacity",
+          "autoscaling:TerminateInstanceInAutoScalingGroup"
+        ],
+        "Resource": ["*"]
+      }
+    ]
+  })
+}
+
+resource "aws_iam_role_policy_attachment" "cluster-autoscale" {
+  policy_arn = aws_iam_policy.cluster-autoscale.arn
+  role       = aws_iam_role.node-example.name
+}
+
 resource "aws_eks_addon" "vpc-cni" {
   cluster_name = aws_eks_cluster.example.name
   addon_name   = "vpc-cni"
