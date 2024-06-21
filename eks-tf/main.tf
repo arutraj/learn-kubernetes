@@ -86,9 +86,9 @@ resource "aws_iam_role_policy_attachment" "example-AmazonEC2ContainerRegistryRea
 }
 
 resource "aws_iam_policy" "cluster-autoscale" {
-  name        = "test_policy"
+  name        = "cluster-autoscale"
   path        = "/"
-  description = "My test policy"
+  description = "cluster-autoscale"
 
   policy = jsonencode({
     "Version": "2012-10-17",
