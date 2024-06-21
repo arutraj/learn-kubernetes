@@ -141,13 +141,49 @@ data "external" "oidc-thumbprint" {
   ]
 }
 
-resource "aws_iam_openid_connect_provider" "eks" {
-  url = aws_eks_cluster.example.identity[0].oidc[0].issuer
+# resource "aws_iam_openid_connect_provider" "eks" {
+#   url = aws_eks_cluster.example.identity[0].oidc[0].issuer
+#
+#   client_id_list = [
+#     "sts.amazonaws.com",
+#   ]
+#
+#   thumbprint_list = [data.external.oidc-thumbprint.result.thumbprint]
+# }
+#
 
-  client_id_list = [
-    "sts.amazonaws.com",
-  ]
+resource "aws_iam_role" "test_role" {
+  name = "test_role1"
 
-  thumbprint_list = [data.external.oidc-thumbprint.result.thumbprint]
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": "sts:AssumeRoleWithWebIdentity",
+        "Principal": {
+          "Federated": "arn:aws:iam::739561048503:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/4C60C27F33DB28CA8679D8F7C4BAA682"
+        },
+        "Condition": {
+          "StringEquals": {
+            "oidc.eks.us-east-1.amazonaws.com/id/4C60C27F33DB28CA8679D8F7C4BAA682:aud": "sts.amazonaws.com",
+            "oidc.eks.us-east-1.amazonaws.com/id/4C60C27F33DB28CA8679D8F7C4BAA682:sub": "system:serviceaccount:default:default"
+          }
+        }
+      }
+    ]
+  })
+
+  tags = {
+    tag-key = "tag-value"
+  }
 }
+
+resource "aws_eks_pod_identity_association" "example" {
+  cluster_name    = aws_eks_cluster.example.name
+  namespace       = "default"
+  service_account = "default"
+  role_arn        = aws_iam_role.test_role.arn
+}
+
 
