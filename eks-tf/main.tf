@@ -179,7 +179,7 @@ resource "aws_iam_role" "test_role" {
   }
 }
 
-data "aws_iam_policy_document" "assume_role" {
+data "aws_iam_policy_document" "assume_role1" {
   statement {
     effect = "Allow"
 
@@ -195,7 +195,7 @@ data "aws_iam_policy_document" "assume_role" {
   }
 }
 
-resource "aws_iam_role" "example" {
+resource "aws_iam_role" "example1" {
   name               = "eks-pod-identity-example"
   assume_role_policy = data.aws_iam_policy_document.assume_role.json
 }
