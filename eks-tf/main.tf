@@ -100,16 +100,26 @@ data "external" "oidc-thumbprint" {
   ]
 }
 
-# resource "aws_iam_openid_connect_provider" "eks" {
-#   url = aws_eks_cluster.example.identity[0].oidc[0].issuer
-#
-#   client_id_list = [
-#     "sts.amazonaws.com",
-#   ]
-#
-#   thumbprint_list = [data.external.oidc-thumbprint.result.thumbprint]
-# }
-#
+resource "aws_iam_openid_connect_provider" "eks" {
+  url = aws_eks_cluster.example.identity[0].oidc[0].issuer
+
+  client_id_list = [
+    "sts.amazonaws.com",
+  ]
+
+  thumbprint_list = [data.external.oidc-thumbprint.result.thumbprint]
+}
+
+resource "aws_eks_identity_provider_config" "example" {
+  cluster_name = aws_eks_cluster.example.name
+
+  oidc {
+    client_id                     = element(tolist(split("/", tostring(aws_eks_cluster.example.identity[0].oidc[0].issuer))), 4)
+    identity_provider_config_name = "iam-oidc"
+    issuer_url                    = aws_eks_cluster.example.identity[0].oidc[0].issuer
+  }
+}
+
 
 resource "aws_iam_role" "eks-cluster-autoscale" {
   name = "eks-cluster-autoscale"
