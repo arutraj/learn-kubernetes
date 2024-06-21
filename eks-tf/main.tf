@@ -141,6 +141,13 @@ data "external" "oidc-thumbprint" {
   ]
 }
 
-output "data" {
-  value = data.external.oidc-thumbprint.result.thumbprint
+resource "aws_iam_openid_connect_provider" "eks" {
+  url = aws_eks_cluster.example.identity[0].oidc[0].issuer
+
+  client_id_list = [
+    "sts.amazonaws.com",
+  ]
+
+  thumbprint_list = [data.external.oidc-thumbprint.result.thumbprint]
 }
+
