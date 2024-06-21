@@ -135,3 +135,12 @@ resource "aws_eks_addon" "vpc-cni" {
   })
 }
 
+data "external" "oidc-thumbprint" {
+  program = [
+    "/usr/bin/kubergrunt", "eks" ,"oidc-thumbprint", "--issuer-url", "${aws_eks_cluster.example.identity[0].oidc[0].issuer}"
+  ]
+}
+
+output "data" {
+  value = data.external.oidc-thumbprint.result.thumbprint
+}
