@@ -85,6 +85,60 @@ resource "aws_iam_role_policy_attachment" "example-AmazonEC2ContainerRegistryRea
   role       = aws_iam_role.node-example.name
 }
 
+resource "aws_eks_addon" "vpc-cni" {
+  cluster_name = aws_eks_cluster.example.name
+  addon_name   = "vpc-cni"
+
+  configuration_values = jsonencode({
+    "enableNetworkPolicy" : "true"
+  })
+}
+
+data "external" "oidc-thumbprint" {
+  program = [
+    "/usr/bin/kubergrunt", "eks" ,"oidc-thumbprint", "--issuer-url", "${aws_eks_cluster.example.identity[0].oidc[0].issuer}"
+  ]
+}
+
+# resource "aws_iam_openid_connect_provider" "eks" {
+#   url = aws_eks_cluster.example.identity[0].oidc[0].issuer
+#
+#   client_id_list = [
+#     "sts.amazonaws.com",
+#   ]
+#
+#   thumbprint_list = [data.external.oidc-thumbprint.result.thumbprint]
+# }
+#
+
+resource "aws_iam_role" "eks-cluster-autoscale" {
+  name = "eks-cluster-autoscale"
+
+  assume_role_policy = jsonencode({
+    "Version": "2012-10-17",
+    "Statement": [
+      {
+        "Effect": "Allow",
+        "Action": "sts:AssumeRoleWithWebIdentity",
+        "Principal": {
+          "Federated": "arn:aws:iam::739561048503:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/4C60C27F33DB28CA8679D8F7C4BAA682"
+        },
+        "Condition": {
+          "StringEquals": {
+            "oidc.eks.us-east-1.amazonaws.com/id/4C60C27F33DB28CA8679D8F7C4BAA682:aud": "sts.amazonaws.com",
+            "oidc.eks.us-east-1.amazonaws.com/id/4C60C27F33DB28CA8679D8F7C4BAA682:sub": "system:serviceaccount:default:default"
+          }
+        }
+      }
+    ]
+  })
+
+  tags = {
+    tag-key = "tag-value"
+  }
+}
+
+
 resource "aws_iam_policy" "cluster-autoscale" {
   name        = "cluster-autoscale"
   path        = "/"
@@ -123,88 +177,7 @@ resource "aws_iam_policy" "cluster-autoscale" {
 
 resource "aws_iam_role_policy_attachment" "cluster-autoscale" {
   policy_arn = aws_iam_policy.cluster-autoscale.arn
-  role       = aws_iam_role.node-example.name
-}
-
-resource "aws_eks_addon" "vpc-cni" {
-  cluster_name = aws_eks_cluster.example.name
-  addon_name   = "vpc-cni"
-
-  configuration_values = jsonencode({
-    "enableNetworkPolicy" : "true"
-  })
-}
-
-data "external" "oidc-thumbprint" {
-  program = [
-    "/usr/bin/kubergrunt", "eks" ,"oidc-thumbprint", "--issuer-url", "${aws_eks_cluster.example.identity[0].oidc[0].issuer}"
-  ]
-}
-
-# resource "aws_iam_openid_connect_provider" "eks" {
-#   url = aws_eks_cluster.example.identity[0].oidc[0].issuer
-#
-#   client_id_list = [
-#     "sts.amazonaws.com",
-#   ]
-#
-#   thumbprint_list = [data.external.oidc-thumbprint.result.thumbprint]
-# }
-#
-
-resource "aws_iam_role" "test_role" {
-  name = "test_role1"
-
-  assume_role_policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
-      {
-        "Effect": "Allow",
-        "Action": "sts:AssumeRoleWithWebIdentity",
-        "Principal": {
-          "Federated": "arn:aws:iam::739561048503:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/4C60C27F33DB28CA8679D8F7C4BAA682"
-        },
-        "Condition": {
-          "StringEquals": {
-            "oidc.eks.us-east-1.amazonaws.com/id/4C60C27F33DB28CA8679D8F7C4BAA682:aud": "sts.amazonaws.com",
-            "oidc.eks.us-east-1.amazonaws.com/id/4C60C27F33DB28CA8679D8F7C4BAA682:sub": "system:serviceaccount:default:default"
-          }
-        }
-      }
-    ]
-  })
-
-  tags = {
-    tag-key = "tag-value"
-  }
-}
-
-data "aws_iam_policy_document" "assume_role1" {
-  statement {
-    effect = "Allow"
-
-    principals {
-      type        = "Service"
-      identifiers = ["pods.eks.amazonaws.com"]
-    }
-
-    actions = [
-      "sts:AssumeRole",
-      "sts:TagSession"
-    ]
-  }
-}
-
-resource "aws_iam_role" "example1" {
-  name               = "eks-pod-identity-example"
-  assume_role_policy = data.aws_iam_policy_document.assume_role.json
-}
-
-resource "aws_eks_pod_identity_association" "example" {
-  cluster_name    = aws_eks_cluster.example.name
-  namespace       = "default"
-  service_account = "default"
-  role_arn        = aws_iam_role.example1.arn
+  role       = aws_iam_role.eks-cluster-autoscale.name
 }
 
 
