@@ -110,11 +110,15 @@ resource "aws_iam_openid_connect_provider" "eks" {
   thumbprint_list = [data.external.oidc-thumbprint.result.thumbprint]
 }
 
+locals {
+  eks_client_id = element(tolist(split("/", tostring(aws_eks_cluster.example.identity[0].oidc[0].issuer))), 4)
+}
+
 resource "aws_eks_identity_provider_config" "example" {
   cluster_name = aws_eks_cluster.example.name
 
   oidc {
-    client_id                     = element(tolist(split("/", tostring(aws_eks_cluster.example.identity[0].oidc[0].issuer))), 4)
+    client_id                     = local.eks_client_id
     identity_provider_config_name = "iam-oidc"
     issuer_url                    = aws_eks_cluster.example.identity[0].oidc[0].issuer
   }
@@ -131,12 +135,12 @@ resource "aws_iam_role" "eks-cluster-autoscale" {
         "Effect": "Allow",
         "Action": "sts:AssumeRoleWithWebIdentity",
         "Principal": {
-          "Federated": "arn:aws:iam::739561048503:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/4C60C27F33DB28CA8679D8F7C4BAA682"
+          "Federated": "arn:aws:iam::739561048503:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}"
         },
         "Condition": {
           "StringEquals": {
-            "oidc.eks.us-east-1.amazonaws.com/id/4C60C27F33DB28CA8679D8F7C4BAA682:aud": "sts.amazonaws.com",
-            "oidc.eks.us-east-1.amazonaws.com/id/4C60C27F33DB28CA8679D8F7C4BAA682:sub": "system:serviceaccount:default:default"
+            "oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}:aud": "sts.amazonaws.com",
+            "oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}:sub": "system:serviceaccount:default:default"
           }
         }
       }
