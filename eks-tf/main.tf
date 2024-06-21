@@ -204,7 +204,7 @@ resource "aws_eks_pod_identity_association" "example" {
   cluster_name    = aws_eks_cluster.example.name
   namespace       = "default"
   service_account = "default"
-  role_arn        = aws_iam_role.test_role.arn
+  role_arn        = aws_iam_role.example1.arn
 }
 
 
