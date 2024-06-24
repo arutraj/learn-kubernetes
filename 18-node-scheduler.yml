@@ -9,5 +9,5 @@ spec:
   - name: nginx
     image: nginx
     imagePullPolicy: IfNotPresent
-#   nodeSelector:
-#     demo: true
+  nodeSelector:
+    demo: false
