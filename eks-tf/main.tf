@@ -44,7 +44,7 @@ resource "aws_eks_node_group" "example" {
   node_group_name = "example"
   node_role_arn   = aws_iam_role.node-example.arn
   subnet_ids      = ["subnet-0f38eb451cbdf6710", "subnet-00542a478baa8a55c"]
-  instance_types  = ["t3.medium", "t3.large"]
+  instance_types  = ["t3.large"]
   capacity_type   = "SPOT"
 
 
