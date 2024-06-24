@@ -9,8 +9,8 @@ spec:
   - name: nginx
     image: nginx
     imagePullPolicy: IfNotPresent
-    tolerations:
-    - effect: NoSchedule
-      key: app
-      operator: Equal
-      value: demo-project
+  tolerations:
+  - effect: NoSchedule
+    key: app
+    operator: Equal
+    value: demo-project
