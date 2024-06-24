@@ -140,7 +140,7 @@ resource "aws_iam_role" "eks-cluster-autoscale" {
         "Condition": {
           "StringEquals": {
             "oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}:aud": "sts.amazonaws.com",
-            "oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}:sub": "system:serviceaccount:default:default"
+            "oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}:sub": "system:serviceaccount:kube-system:cluster-autoscaler"
           }
         }
       }
@@ -148,7 +148,7 @@ resource "aws_iam_role" "eks-cluster-autoscale" {
   })
 
   tags = {
-    tag-key = "tag-value"
+    Name = "eks-cluster-autoscale"
   }
 }
 
