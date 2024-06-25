@@ -30,18 +30,18 @@ spec:
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: frontend-1
+  name: frontend1
   labels:
     app: guestbook
-    tier: frontend-1
+    tier: frontend1
 spec:
   replicas: 3
   selector:
     matchLabels:
-      tier: frontend-1
+      tier: frontend1
     metadata:
       labels:
-        tier: frontend-1
+        tier: frontend1
     spec:
       containers:
       - name: nginx
