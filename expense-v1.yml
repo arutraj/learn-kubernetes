@@ -32,6 +32,8 @@ spec:
   containers:
     - name: backend
       image: docker.io/rkalluru/d79-backend
+      ports:
+      - containerPort: 80
       env:
         - name: DB_HOST
           value: "mysql"
