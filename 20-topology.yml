@@ -32,13 +32,14 @@ kind: Deployment
 metadata:
   name: frontend1
   labels:
-    app: guestbook
+    app: guestbook1
     tier: frontend1
 spec:
   replicas: 3
   selector:
     matchLabels:
       tier: frontend1
+  template:
     metadata:
       labels:
         tier: frontend1
@@ -46,5 +47,3 @@ spec:
       containers:
       - name: nginx
         image: docker.io/nginx:1.24
-
-
