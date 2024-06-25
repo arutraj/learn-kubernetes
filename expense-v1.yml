@@ -44,7 +44,7 @@ metadata:
   name: backend
 spec:
   selector:
-    app: nginx
+    app: backend
   ports:
     - protocol: TCP
       port: 8080
