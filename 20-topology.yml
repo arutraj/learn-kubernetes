@@ -26,4 +26,25 @@ spec:
       - name: nginx
         image: docker.io/nginx:1.24
 
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: frontend-1
+  labels:
+    app: guestbook
+    tier: frontend-1
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      tier: frontend-1
+    metadata:
+      labels:
+        tier: frontend-1
+    spec:
+      containers:
+      - name: nginx
+        image: docker.io/nginx:1.24
+
 
