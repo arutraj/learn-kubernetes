@@ -32,6 +32,9 @@ spec:
   containers:
     - name: backend
       image: docker.io/rkalluru/d79-backend
+      env:
+        - name: DB_HOST
+          value: "mysql"
 ---
 apiVersion: v1
 kind: Service
