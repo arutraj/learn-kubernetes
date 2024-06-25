@@ -55,6 +55,9 @@ spec:
   containers:
     - name: mysqll
       image: docker.io/mysql:8.0
+      env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: ExpenseApp@1
 ---
 apiVersion: v1
 kind: Service
