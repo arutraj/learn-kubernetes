@@ -70,3 +70,28 @@ spec:
     - protocol: TCP
       port: 3306
       targetPort: 3306
+
+---
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: schema-load
+spec:
+  template:
+    spec:
+      containers:
+      - name: load
+        image: docker.io/rkalluru/d79-schema-loader
+        env:
+          - name: login_user
+            value: root
+          - name: login_password
+            value: ExpenseApp@1
+          - name: login_host
+            value: mysql
+          - name: app_repo
+            value: "https://github.com/raghudevopsb79/expense-backend"
+          - name: schema_file
+            value: /app/schema/backend.sql
+      restartPolicy: Never
+  backoffLimit: 4
