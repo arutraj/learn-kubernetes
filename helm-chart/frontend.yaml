@@ -4,4 +4,6 @@ service:
   type: LoadBalancer
   port: 80
 
+replicas: 1
+
 
