@@ -1,2 +1,6 @@
 appName: backend
 
+service:
+  type: ClusterIP
+  port: 80
+
