@@ -7,5 +7,5 @@ service:
 replicas: 1
 env: {}
 
-schema-job:
+schemaJob:
   enabled: false

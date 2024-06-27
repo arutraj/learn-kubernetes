@@ -1,4 +1,4 @@
-{{- if .Values.schema-job.enabled -}}
+{{- if .Values.schemaJob.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
