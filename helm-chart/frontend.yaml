@@ -6,3 +6,6 @@ service:
 
 replicas: 1
 env: {}
+
+schema-job:
+  enabled: false

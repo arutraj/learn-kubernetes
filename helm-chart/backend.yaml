@@ -14,6 +14,9 @@ env:
   app_repo: "https://github.com/raghudevopsb79/expense-backend"
   schema_file: /app/schema/backend.sql
 
+schema-job:
+  enabled: true
+
 
 
 

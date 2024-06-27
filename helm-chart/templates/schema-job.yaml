@@ -1,3 +1,4 @@
+{{- if .Values.schema-job.enabled -}}
 apiVersion: batch/v1
 kind: Job
 metadata:
@@ -13,3 +14,4 @@ spec:
             name: {{ .Values.appName }}
       restartPolicy: Never
   backoffLimit: 4
+{{- end }}
