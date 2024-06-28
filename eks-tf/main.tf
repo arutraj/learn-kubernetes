@@ -96,7 +96,7 @@ resource "aws_eks_addon" "vpc-cni" {
 
 data "external" "oidc-thumbprint" {
   program = [
-    "/usr/bin/kubergrunt", "eks" ,"oidc-thumbprint", "--issuer-url", "${aws_eks_cluster.example.identity[0].oidc[0].issuer}"
+    "/usr/bin/kubergrunt", "eks", "oidc-thumbprint", "--issuer-url", "${aws_eks_cluster.example.identity[0].oidc[0].issuer}"
   ]
 }
 
@@ -129,18 +129,18 @@ resource "aws_iam_role" "eks-cluster-autoscale" {
   name = "eks-cluster-autoscale"
 
   assume_role_policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Action": "sts:AssumeRoleWithWebIdentity",
-        "Principal": {
-          "Federated": "arn:aws:iam::739561048503:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}"
+        "Effect" : "Allow",
+        "Action" : "sts:AssumeRoleWithWebIdentity",
+        "Principal" : {
+          "Federated" : "arn:aws:iam::739561048503:oidc-provider/oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}"
         },
-        "Condition": {
-          "StringEquals": {
-            "oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}:aud": "sts.amazonaws.com",
-            "oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}:sub": "system:serviceaccount:kube-system:cluster-autoscaler"
+        "Condition" : {
+          "StringEquals" : {
+            "oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}:aud" : "sts.amazonaws.com",
+            "oidc.eks.us-east-1.amazonaws.com/id/${local.eks_client_id}:sub" : "system:serviceaccount:kube-system:cluster-autoscaler"
           }
         }
       }
@@ -159,11 +159,11 @@ resource "aws_iam_policy" "cluster-autoscale" {
   description = "cluster-autoscale"
 
   policy = jsonencode({
-    "Version": "2012-10-17",
-    "Statement": [
+    "Version" : "2012-10-17",
+    "Statement" : [
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "autoscaling:DescribeAutoScalingGroups",
           "autoscaling:DescribeAutoScalingInstances",
           "autoscaling:DescribeLaunchConfigurations",
@@ -175,15 +175,15 @@ resource "aws_iam_policy" "cluster-autoscale" {
           "ec2:GetInstanceTypesFromInstanceRequirements",
           "eks:DescribeNodegroup"
         ],
-        "Resource": ["*"]
+        "Resource" : ["*"]
       },
       {
-        "Effect": "Allow",
-        "Action": [
+        "Effect" : "Allow",
+        "Action" : [
           "autoscaling:SetDesiredCapacity",
           "autoscaling:TerminateInstanceInAutoScalingGroup"
         ],
-        "Resource": ["*"]
+        "Resource" : ["*"]
       }
     ]
   })
